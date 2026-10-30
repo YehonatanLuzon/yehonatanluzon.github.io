@@ -96,7 +96,9 @@ f.addEventListener("submit",async ev=>{
   const err=check();msg.textContent=err;if(err)return;
   btn.disabled=true;btn.textContent="שולח";
   try{
-    const res=await fetch("https://formsubmit.co/ajax/yehonatan.luzon1@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({"שם":f.name.value.trim(),"טלפון":f.phone.value.trim(),"אימייל":f.email.value.trim(),"מקור":"אינסטגרם",_subject:"ליד חדש מאינסטגרם",_template:"table",_captcha:"false",_honey:f._honey.value})});
+    const res=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({access_key:"a38cf378-e1cb-400f-8122-04add2c35e08",subject:"ליד חדש מאינסטגרם",from_name:"דף השארת פרטים","שם":f.name.value.trim(),"טלפון":f.phone.value.trim(),"אימייל":f.email.value.trim(),"מקור":"אינסטגרם",botcheck:f._honey.value?true:""})});
+    const out=await res.json().catch(()=>({}));
+    if(!out.success)throw new Error(out.message||res.status);
     if(!res.ok)throw new Error(res.status);
     f.hidden=true;document.getElementById("done").hidden=false;
   }catch(_){
