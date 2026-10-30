@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>יהונתן לוזון | שיחת היכרות</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;900&family=Heebo:wght@300;400;500&display=swap">
+<style>
+/* Layout: one dark screen — a heavy serif statement, a hairline, then underline-only fields */
+:root{
+  --ink:#e8d7b7; --paper:#1a1816; --dim:#7a736a; --hair:rgba(26,24,22,.2); --gold:#9c7a4c; --err:#e07a6a;
+  --display:"Frank Ruhl Libre",Georgia,"Times New Roman",serif; --body:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  margin:0;direction:rtl;font-family:var(--body);font-weight:300;color:var(--paper);background:var(--ink);
+  padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));
+  padding-block:18vh 48px;display:flex;justify-content:center;
+}
+.wrap{width:100%;max-width:400px;display:flex;flex-direction:column;gap:56px}
+h1{font-family:var(--display);font-weight:300;font-size:clamp(26px,8.2vw,40px);line-height:1.1;letter-spacing:-.01em;margin:0;white-space:nowrap}
+h1 span{color:var(--gold)}
+form{display:flex;flex-direction:column;gap:30px}
+.tag{display:flex;align-items:center;gap:14px;font-size:12px;font-weight:500;letter-spacing:.24em;color:var(--dim);margin:0}
+.tag::after{content:"";flex:1;height:1px;background:var(--hair)}
+label{display:flex;flex-direction:column;gap:4px;font-size:12px;letter-spacing:.12em;color:var(--dim)}
+input{font:inherit;font-size:19px;font-weight:300;color:var(--paper);background:transparent;border:0;border-bottom:1px solid var(--hair);
+  border-radius:0;padding:10px 0;outline:none;width:100%;transition:border-color .25s}
+input::placeholder{color:rgba(26,24,22,.3)}
+input:focus{border-bottom-color:var(--paper)}
+input[aria-invalid="true"]{border-bottom-color:var(--err)}
+input[type=tel],input[type=email]{direction:ltr;text-align:right}
+input:-webkit-autofill{-webkit-text-fill-color:var(--paper);-webkit-box-shadow:0 0 0 40px var(--ink) inset}
+.msg{font-size:13px;color:var(--err);margin:-14px 0 0}
+.msg:empty{display:none}
+button{font:inherit;font-size:15px;font-weight:500;letter-spacing:.3em;color:var(--ink);background:var(--paper);
+  border:1px solid var(--paper);border-radius:0;padding:18px;cursor:pointer;transition:background .25s,color .25s}
+button:hover{background:transparent;color:var(--paper)}
+button:focus-visible,input:focus-visible{outline:1px solid var(--gold);outline-offset:4px}
+button[disabled]{opacity:.6;cursor:wait}
+.done{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--hair);padding-top:28px}
+.done h2{font-family:var(--display);font-weight:900;font-size:34px;margin:0}
+.done p{margin:0;font-size:17px;line-height:1.6;color:var(--dim)}
+@media (prefers-reduced-motion:no-preference){
+  h1,form{animation:in .9s cubic-bezier(.2,.7,.2,1) both}
+  form{animation-delay:.15s}
+  @keyframes in{from{opacity:.001;transform:translateY(12px)}to{opacity:1;transform:none}}
+}
+[hidden]{display:none!important}
+body{background:linear-gradient(125deg,#fbf8f2 0%,var(--ink) 30%,#fdfbf7 55%,var(--ink) 80%,#fbf8f2 100%);background-color:var(--ink);background-size:300% 300%;background-attachment:fixed}
+@media (prefers-reduced-motion:no-preference){body{animation:drift 16s ease-in-out infinite alternate}@keyframes drift{from{background-position:0% 50%}to{background-position:100% 50%}}}
+input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px #f4ecdc inset}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <form id="lead" novalidate>
+    <input type="text" name="_honey" tabindex="-1" autocomplete="off" hidden>
+    <p class="tag">השארת פרטים</p>
+    <label for="name">שם מלא
+      <input id="name" name="name" type="text" autocomplete="name" required>
+    </label>
+    <label for="phone">טלפון
+      <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
+    </label>
+    <label for="email">אימייל
+      <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required>
+    </label>
+    <p class="msg" id="msg" role="alert"></p>
+    <button type="submit" id="send">שלח</button>
+  </form>
+
+  <div class="done" id="done" hidden>
+    <h2>קיבלתי.</h2>
+    <p>אחזור אליך בקרוב.</p>
+  </div>
+</div>
+
+<script>
+const f=document.getElementById("lead"),msg=document.getElementById("msg"),btn=document.getElementById("send");
+function check(){
+  const n=f.name.value.trim(),p=f.phone.value.replace(/[\s-]/g,""),e=f.email.value.trim();
+  [f.name,f.phone,f.email].forEach(i=>i.removeAttribute("aria-invalid"));
+  if(n.length<2){f.name.setAttribute("aria-invalid","true");return "כתוב את השם שלך";}
+  if(!/^(\+972|0)5\d{8}$/.test(p)){f.phone.setAttribute("aria-invalid","true");return "מספר נייד לא תקין, למשל 050-1234567";}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){f.email.setAttribute("aria-invalid","true");return "כתובת אימייל לא תקינה";}
+  return "";
+}
+f.addEventListener("submit",async ev=>{
+  ev.preventDefault();
+  const err=check();msg.textContent=err;if(err)return;
+  btn.disabled=true;btn.textContent="שולח";
+  try{
+    const res=await fetch("https://formsubmit.co/ajax/yehonatan.luzon1@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({"שם":f.name.value.trim(),"טלפון":f.phone.value.trim(),"אימייל":f.email.value.trim(),"מקור":"אינסטגרם",_subject:"ליד חדש מאינסטגרם",_template:"table",_captcha:"false",_honey:f._honey.value})});
+    if(!res.ok)throw new Error(res.status);
+    f.hidden=true;document.getElementById("done").hidden=false;
+  }catch(_){
+    msg.textContent="השליחה לא עברה. בדוק את החיבור ונסה שוב.";
+    btn.disabled=false;btn.textContent="שלח";
+  }
+});
+</script>
+</body>
+</html>
