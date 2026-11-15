@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>יהונתן לוזון - מאמן אישי למציאת חופש | המשך להרצאה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F5F2ED;--ink:#1d1b18;--muted:#6b655c;--accent:#E0662F;--accent-soft:#fbe9df;--card:#fff;--line:#e6e0d6}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Heebo,system-ui,sans-serif;line-height:1.6}
+  .wrap{max-width:620px;margin:0 auto;padding:40px 20px 60px}
+  .brand{font-size:14px;color:var(--muted);font-weight:500;margin-bottom:28px}
+  .tag{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;padding:4px 12px;border-radius:99px;margin-bottom:14px}
+  h1{font-size:34px;line-height:1.2;margin:0 0 14px;font-weight:800}
+  .lead{font-size:18px;color:var(--muted);margin:0 0 32px}
+  h2{font-size:20px;margin:0 0 14px}
+  .options{display:grid;gap:12px;margin-bottom:28px}
+  .opt{position:relative;display:block;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:18px 20px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+  .opt input{position:absolute;opacity:0;pointer-events:none}
+  .opt:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .opt .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .opt .name{font-weight:700;font-size:18px}
+  .opt .price{font-weight:800;color:var(--accent);white-space:nowrap}
+  .opt .meta{font-size:14px;color:var(--muted);margin-top:2px}
+  .opt .desc{font-size:15px;margin-top:8px}
+  form{background:var(--card);border-radius:18px;padding:24px 20px;border:1px solid var(--line)}
+  label.f{display:block;font-size:14px;font-weight:500;margin:0 0 6px}
+  input.t{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;margin-bottom:16px;direction:rtl}
+  input.t:focus{outline:none;border-color:var(--accent)}
+  input[type=tel],input[type=email]{text-align:right}
+  button{width:100%;font:inherit;font-size:18px;font-weight:700;color:#fff;background:var(--accent);border:0;border-radius:12px;padding:14px;cursor:pointer}
+  button[disabled]{opacity:.6;cursor:default}
+  .err{color:#b42318;font-size:14px;min-height:20px;margin:-4px 0 10px}
+  .done{display:none;text-align:center;background:var(--card);border-radius:18px;padding:36px 20px;border:1px solid var(--line)}
+  .done h2{font-size:24px}
+  .foot{margin-top:36px;font-size:14px;color:var(--muted);text-align:center}
+  .foot a{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">יהונתן לוזון - מאמן אישי למציאת חופש</div>
+
+  <div id="main">
+    <span class="tag">המשך ישיר להרצאה</span>
+    <h1>ההרצאה הדליקה משהו? בוא נמשיך מכאן</h1>
+    <p class="lead">אם יצאת מההרצאה עם תחושה שהגיע הזמן למצוא את המקצוע שהוא התשוקה שלך, אבל עוד לא ברור מה הצעד הבא — בחר איך נמשיך.</p>
+
+    <h2>איזו שיחה מתאימה לך?</h2>
+    <div class="options">
+      <label class="opt">
+        <input type="radio" name="call" value="free" checked>
+        <div class="top"><span class="name">שיחת היכרות</span><span class="price">חינם</span></div>
+        <div class="meta">20 דקות · בטלפון או בזום · בלי התחייבות</div>
+        <div class="desc">נכיר, נבין איפה אתה נמצא ומה מעכב אותך, ונבדוק יחד אם תהליך אימון מתאים לך.</div>
+      </label>
+      <label class="opt">
+        <input type="radio" name="call" value="afyun">
+        <div class="top"><span class="name">שיחת אפיון</span><span class="price">100 ₪</span></div>
+        <div class="meta">שעה · פרונטלית או בזום · מחיר סמלי</div>
+        <div class="desc">שיחה מעמיקה: ממפים את האמונות שמעכבות אותך, מדייקים מה באמת מדליק אותך, ויוצאים עם צעד ראשון מעשי לעבר המקצוע שהוא התשוקה שלך.</div>
+      </label>
+    </div>
+
+    <form id="f" novalidate>
+      <label class="f" for="n">שם מלא *</label>
+      <input class="t" id="n" name="full_name" autocomplete="name">
+      <label class="f" for="p">טלפון *</label>
+      <input class="t" id="p" name="phone" type="tel" inputmode="tel" autocomplete="tel">
+      <label class="f" for="e">אימייל (לא חובה)</label>
+      <input class="t" id="e" name="email" type="email" autocomplete="email">
+      <div class="err" id="err"></div>
+      <button id="b" type="submit">שריין לי שיחה</button>
+    </form>
+  </div>
+
+  <div class="done" id="done">
+    <h2>תודה! קיבלתי את הפרטים 🙏</h2>
+    <p id="doneTxt">אחזור אליך בקרוב בוואטסאפ כדי לתאם מועד.</p>
+  </div>
+
+  <div class="foot">לשאלות: 058-500-8617</div>
+</div>
+
+<script>
+  var ENDPOINT = 'https://flowlecrm.com/api/apps/69d252f46a73c52a0ba689dc/functions/submitLandingPageLead';
+  var PAGES = {
+    free:  { id: '6afa415dee5fa69f74c1255a', name: 'הרצאה – שיחת היכרות 20 דק׳ (חינם)', label: 'שיחת ההיכרות' },
+    afyun: { id: '6afa40ee426b7d142b27c2af', name: 'הרצאה – שיחת אפיון שעה (100 ₪)', label: 'שיחת האפיון' }
+  };
+  var ref = '';
+  try { ref = new URLSearchParams(location.search).get('ref') || ''; } catch (e) {}
+
+  var form = document.getElementById('f'), err = document.getElementById('err'), btn = document.getElementById('b');
+  form.addEventListener('submit', async function (ev) {
+    ev.preventDefault();
+    if (btn.disabled) return;
+    var name = form.full_name.value.trim(), phone = form.phone.value.trim(), email = form.email.value.trim();
+    if (!name) { err.textContent = 'נשמח לדעת את שמך.'; return; }
+    if (phone.replace(/\D/g, '').length < 9) { err.textContent = 'מספר הטלפון לא נראה תקין — בדוק שהוקלד במלואו.'; return; }
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) { err.textContent = 'כתובת האימייל לא נראית תקינה. אפשר גם להשאיר ריק.'; return; }
+    var choice = document.querySelector('input[name=call]:checked').value, pg = PAGES[choice];
+    err.textContent = ''; btn.disabled = true; btn.textContent = 'שולח...';
+    try {
+      var r = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ full_name: name, phone: phone, email: email, landing_page_id: pg.id, landing_page_name: pg.name, ref: ref })
+      });
+      var j = await r.json().catch(function () { return {}; });
+      if (!j.success) throw new Error('fail');
+      document.getElementById('main').style.display = 'none';
+      document.getElementById('doneTxt').textContent = 'נרשמת ל' + pg.label + '. אחזור אליך בקרוב בוואטסאפ כדי לתאם מועד.';
+      document.getElementById('done').style.display = 'block';
+    } catch (e) {
+      err.textContent = 'משהו נתקע בשליחה. נסה שוב בעוד רגע, או כתוב לי ישירות: 058-500-8617';
+      btn.disabled = false; btn.textContent = 'שריין לי שיחה';
+    }
+  });
+</script>
+</body>
+</html>
