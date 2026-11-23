@@ -100,8 +100,8 @@
 <script>
   var ENDPOINT = 'https://flowlecrm.com/api/apps/69d252f46a73c52a0ba689dc/functions/submitLandingPageLead';
   var PAGES = {
-    free:  { id: '6afa415dee5fa69f74c1255a', name: 'שיחת היכרות 20 דק׳ (חינם)', label: 'שיחת ההיכרות' },
-    afyun: { id: '6afa40ee426b7d142b27c2af', name: 'שיחת אפיון 60 דק׳ (120 ₪)', label: 'שיחת האפיון' }
+    free:  { id: '6afa415dee5fa69f74c1255a', name: 'שיחת היכרות 20 דק׳ (חינם)', label: 'שיחת ההיכרות', tag: 'היכרות' },
+    afyun: { id: '6afa40ee426b7d142b27c2af', name: 'שיחת אפיון 60 דק׳ (120 ₪)', label: 'שיחת האפיון', tag: 'אפיון' }
   };
   var ref = '';
   try { ref = new URLSearchParams(location.search).get('ref') || ''; } catch (e) {}
@@ -120,7 +120,7 @@
       var r = await fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ full_name: name, phone: phone, email: email, landing_page_id: pg.id, landing_page_name: pg.name, ref: ref })
+        body: JSON.stringify({ full_name: name + ' · ' + pg.tag, phone: phone, email: email, landing_page_id: pg.id, landing_page_name: pg.name, ref: ref })
       });
       var j = await r.json().catch(function () { return {}; });
       if (!j.success) throw new Error('fail');
