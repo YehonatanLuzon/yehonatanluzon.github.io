@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>יהונתן לוזון · מאמן מנטלי | קביעת פגישה</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F5F2ED;--ink:#1d1b18;--muted:#6b655c;--accent:#E0662F;--accent-soft:#fbe9df;--card:#fff;--line:#e6e0d6}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Heebo,system-ui,sans-serif;line-height:1.6}
+  .wrap{max-width:600px;margin:0 auto;padding:40px 18px 64px}
+  .brand{font-size:14px;color:var(--muted);font-weight:500;margin-bottom:24px;text-align:center}
+  h1{font-size:32px;line-height:1.25;margin:0 0 8px;font-weight:800;text-align:center}
+  .lead{font-size:17px;color:var(--muted);margin:0 auto 28px;text-align:center}
+  h2{font-size:19px;margin:26px 0 12px}
+  .types{display:grid;gap:10px}
+  .opt{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px 18px;cursor:pointer}
+  .opt input{position:absolute;opacity:0;pointer-events:none}
+  .opt:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .opt .name{font-weight:700;font-size:17px}
+  .opt .meta{font-size:14px;color:var(--muted)}
+  .days{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x mandatory}
+  .day{flex:0 0 auto;scroll-snap-align:start;min-width:74px;text-align:center;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:8px 6px;cursor:pointer;font:inherit;color:inherit}
+  .day b{display:block;font-size:20px}
+  .day small{font-size:13px;color:var(--muted)}
+  .day.on{border-color:var(--accent);background:var(--accent-soft)}
+  .times{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+  .time{font:inherit;font-size:16px;font-weight:500;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:10px 4px;cursor:pointer;color:inherit;direction:ltr}
+  .time.on{border-color:var(--accent);background:var(--accent);color:#fff}
+  .empty{color:var(--muted);text-align:center;padding:16px;background:var(--card);border-radius:14px;border:1px dashed var(--line)}
+  form{background:var(--card);border-radius:18px;padding:22px 20px;border:1px solid var(--line);margin-top:26px}
+  .sum{background:var(--accent-soft);border-radius:12px;padding:10px 14px;margin-bottom:16px;font-weight:500;text-align:center}
+  label.f{display:block;font-size:14px;font-weight:500;margin:0 0 6px}
+  input.t{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;margin-bottom:14px}
+  input.t:focus{outline:none;border-color:var(--accent)}
+  .hp{position:absolute;left:-9999px;opacity:0}
+  button.go{width:100%;font:inherit;font-size:18px;font-weight:700;color:#fff;background:var(--accent);border:0;border-radius:12px;padding:14px;cursor:pointer}
+  button.go[disabled]{opacity:.6;cursor:default}
+  .err{color:#b42318;font-size:14px;min-height:20px;margin:0 0 10px;text-align:center}
+  .done{text-align:center;background:var(--card);border-radius:18px;padding:36px 20px;border:1px solid var(--line)}
+  .done .big{font-size:44px}
+  .hide{display:none}
+  .load{text-align:center;color:var(--muted);padding:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">יהונתן לוזון · מאמן מנטלי</div>
+  <div id="main">
+    <h1>קביעת פגישה</h1>
+    <p class="lead">בוחרים סוג פגישה, יום ושעה שנוחים לך.</p>
+
+    <h2>1. איזו פגישה?</h2>
+    <div class="types" id="types"></div>
+
+    <h2>2. איזה יום?</h2>
+    <div id="daysBox"><div class="load">טוען שעות פנויות…</div></div>
+
+    <h2 id="timesH" class="hide">3. באיזו שעה?</h2>
+    <div id="timesBox"></div>
+
+    <form id="f" class="hide" autocomplete="on">
+      <div class="sum" id="sum"></div>
+      <label class="f" for="n">שם מלא</label>
+      <input class="t" id="n" autocomplete="name" required>
+      <label class="f" for="p">טלפון</label>
+      <input class="t" id="p" type="tel" autocomplete="tel" inputmode="tel" required>
+      <label class="f" for="e">אימייל (לא חובה)</label>
+      <input class="t" id="e" type="email" autocomplete="email">
+      <input class="hp" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="err" id="err"></div>
+      <button class="go" id="b" type="submit">קבע את הפגישה</button>
+    </form>
+  </div>
+
+  <div id="done" class="done hide">
+    <div class="big">🎉</div>
+    <h2 style="margin:8px 0">הפגישה נקבעה!</h2>
+    <p id="doneTxt"></p>
+    <p style="color:var(--muted);font-size:14px">אישור נשלח אליך בוואטסאפ. אם משהו משתנה – פשוט כתוב/כתבי לי שם.</p>
+  </div>
+</div>
+<script>
+  var API = 'https://script.google.com/macros/s/AKfycbykbSkHoGxYKiIYvdFW_zRnW6cJH7s2ZNKtJRpOrP9CsBpL1Z26yBg4pQlKR7-aTZM2/exec';
+  var TYPES = [
+    { id: 'session', name: 'מפגש אימון', meta: '60 דקות' },
+    { id: 'afyun', name: 'שיחת אפיון', meta: '60 דקות · 120 ₪' },
+    { id: 'intro', name: 'שיחת היכרות', meta: '20 דקות · חינם' }
+  ];
+  var DAYN = ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳'];
+  var type = (new URLSearchParams(location.search).get('type')) || 'session';
+  if (!TYPES.some(function (t) { return t.id === type; })) type = 'session';
+  var days = [], day = null, time = null;
+  var $ = function (id) { return document.getElementById(id); };
+
+  function call(o) {
+    return fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(o) }).then(function (r) { return r.json(); });
+  }
+  function renderTypes() {
+    $('types').innerHTML = TYPES.map(function (t) {
+      return '<label class="opt"><input type="radio" name="ty" value="' + t.id + '"' + (t.id === type ? ' checked' : '') + '><span class="name">' + t.name + '</span><span class="meta">' + t.meta + '</span></label>';
+    }).join('');
+    $('types').querySelectorAll('input').forEach(function (i) { i.onchange = function () { type = i.value; load(); }; });
+  }
+  function load() {
+    day = null; time = null; $('f').classList.add('hide'); $('timesH').classList.add('hide'); $('timesBox').innerHTML = '';
+    $('daysBox').innerHTML = '<div class="load">טוען שעות פנויות…</div>';
+    call({ action: 'slots', type: type }).then(function (r) {
+      days = (r && r.days) || [];
+      if (!days.length) { $('daysBox').innerHTML = '<div class="empty">אין כרגע שעות פנויות. כתוב/כתבי לי בוואטסאפ: 058-500-8617</div>'; return; }
+      $('daysBox').innerHTML = '<div class="days">' + days.map(function (d, i) {
+        var dt = new Date(d.date + 'T12:00:00');
+        return '<button type="button" class="day" data-i="' + i + '"><small>' + DAYN[dt.getDay()] + '</small><b>' + dt.getDate() + '.' + (dt.getMonth() + 1) + '</b></button>';
+      }).join('') + '</div>';
+      $('daysBox').querySelectorAll('.day').forEach(function (b) { b.onclick = function () { pickDay(+b.dataset.i, b); }; });
+      pickDay(0, $('daysBox').querySelector('.day'));
+    }).catch(function () { $('daysBox').innerHTML = '<div class="empty">משהו לא נטען. נסה/י לרענן את הדף.</div>'; });
+  }
+  function pickDay(i, btn) {
+    day = days[i]; time = null; $('f').classList.add('hide');
+    $('daysBox').querySelectorAll('.day').forEach(function (b) { b.classList.toggle('on', b === btn); });
+    $('timesH').classList.remove('hide');
+    $('timesBox').innerHTML = '<div class="times">' + day.slots.map(function (s) { return '<button type="button" class="time">' + s + '</button>'; }).join('') + '</div>';
+    $('timesBox').querySelectorAll('.time').forEach(function (b) { b.onclick = function () { pickTime(b); }; });
+  }
+  function pickTime(btn) {
+    time = btn.textContent;
+    $('timesBox').querySelectorAll('.time').forEach(function (b) { b.classList.toggle('on', b === btn); });
+    var t = TYPES.filter(function (x) { return x.id === type; })[0], dt = new Date(day.date + 'T12:00:00');
+    $('sum').textContent = t.name + ' · יום ' + DAYN[dt.getDay()] + ' ' + dt.getDate() + '.' + (dt.getMonth() + 1) + ' · ' + time;
+    $('f').classList.remove('hide'); $('err').textContent = '';
+    $('f').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  $('f').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var name = $('n').value.trim(), phone = $('p').value.trim(), email = $('e').value.trim();
+    if (!name) { $('err').textContent = 'נשמח לדעת את שמך.'; return; }
+    if (phone.replace(/\D/g, '').length < 9) { $('err').textContent = 'מספר הטלפון לא נראה תקין.'; return; }
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) { $('err').textContent = 'כתובת האימייל לא נראית תקינה.'; return; }
+    $('b').disabled = true; $('b').textContent = 'קובע…'; $('err').textContent = '';
+    call({ action: 'book', type: type, date: day.date, time: time, name: name, phone: phone, email: email, hp: $('hp').value }).then(function (r) {
+      if (r && r.ok) {
+        $('main').classList.add('hide'); $('done').classList.remove('hide');
+        $('doneTxt').textContent = $('sum').textContent; window.scrollTo(0, 0); return;
+      }
+      $('err').textContent = r && r.error === 'taken' ? 'השעה הזאת נתפסה הרגע. בחר/י שעה אחרת.' : 'משהו לא עבד. נסה/י שוב, או כתוב/כתבי לי בוואטסאפ: 058-500-8617';
+      if (r && r.error === 'taken') load();
+    }).catch(function () { $('err').textContent = 'משהו לא עבד. נסה/י שוב בעוד רגע.'; })
+      .finally(function () { $('b').disabled = false; $('b').textContent = 'קבע את הפגישה'; });
+  });
+  renderTypes(); load();
+</script>
+</body>
+</html>
