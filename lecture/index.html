@@ -98,10 +98,10 @@
 </div>
 
 <script>
-  var ENDPOINT = 'https://flowlecrm.com/api/apps/69d252f46a73c52a0ba689dc/functions/submitLandingPageLead';
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbykbSkHoGxYKiIYvdFW_zRnW6cJH7s2ZNKtJRpOrP9CsBpL1Z26yBg4pQlKR7-aTZM2/exec';
   var PAGES = {
-    free:  { id: '6afa415dee5fa69f74c1255a', name: 'שיחת היכרות 20 דק׳ (חינם)', label: 'שיחת ההיכרות', tag: 'היכרות' },
-    afyun: { id: '6afa40ee426b7d142b27c2af', name: 'שיחת אפיון 60 דק׳ (120 ₪)', label: 'שיחת האפיון', tag: 'אפיון' }
+    free:  { id: '6afa415dee5fa69f74c1255a', name: 'שיחת היכרות 20 דק׳ (חינם)', label: 'שיחת ההיכרות', tag: 'היכרות', choice: 'שיחת היכרות' },
+    afyun: { id: '6afa40ee426b7d142b27c2af', name: 'שיחת אפיון 60 דק׳ (120 ₪)', label: 'שיחת האפיון', tag: 'אפיון', choice: 'שיחת אפיון' }
   };
   var ref = '';
   try { ref = new URLSearchParams(location.search).get('ref') || ''; } catch (e) {}
@@ -119,11 +119,11 @@
     try {
       var r = await fetch(ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ full_name: name + ' · ' + pg.tag, phone: phone, email: email, landing_page_id: pg.id, landing_page_name: pg.name, ref: ref })
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'lead', full_name: name, phone: phone, email: email, choice: pg.choice, source: 'דף הרצאה', ref: ref })
       });
       var j = await r.json().catch(function () { return {}; });
-      if (!j.success) throw new Error('fail');
+      if (!j.ok) throw new Error('fail');
       document.getElementById('main').style.display = 'none';
       document.getElementById('doneTxt').textContent = 'אחזור אליך בוואטסאפ לתיאום ' + pg.label + '.';
       document.getElementById('done').style.display = 'block';
