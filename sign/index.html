@@ -140,7 +140,7 @@ function validId(id) {
     $('hello').textContent = 'שלום ' + (C.clientName || '') + ', זה ההסכם שלנו. קרא/י, מלא/י את הפרטים וחתום/י.';
     $('fname').value = C.clientName || ''; $('femail').value = C.email || ''; $('fphone').value = C.phone || '';
     $('load').classList.add('hide'); $('main').classList.remove('hide');
-    const doc = await pdfjsLib.getDocument({ data: pdfBytes.slice() }).promise;
+    const doc = await pdfjsLib.getDocument({ data: pdfBytes.slice(), disableFontFace: true, cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/', cMapPacked: true, standardFontDataUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/standard_fonts/' }).promise;
     for (let p = 1; p <= doc.numPages; p++) {
       const page = await doc.getPage(p), vp = page.getViewport({ scale: 1.6 });
       const cv = document.createElement('canvas'); cv.width = vp.width; cv.height = vp.height;
