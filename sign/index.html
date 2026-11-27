@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>חתימה על הסכם · יהונתן לוזון</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F5F2ED;--ink:#1d1b18;--muted:#6b655c;--accent:#E0662F;--soft:#fbe9df;--card:#fff;--line:#e6e0d6;--ok:#1f7a4d;--bad:#b42318}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Heebo,system-ui,sans-serif}
+  .wrap{max-width:720px;margin:0 auto;padding:28px 16px 60px}
+  .brand{text-align:center;color:var(--muted);font-size:14px;margin-bottom:8px}
+  h1{text-align:center;font-size:26px;margin:0 0 6px;font-weight:800}
+  .sub{text-align:center;color:var(--muted);margin:0 0 22px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px}
+  .card h2{font-size:18px;margin:0 0 12px}
+  #doc{max-height:70vh;overflow-y:auto;border:1px solid var(--line);border-radius:12px;background:#eee;padding:8px}
+  #doc canvas{display:block;width:100%;height:auto;margin:0 auto 8px;background:#fff;box-shadow:0 1px 4px #0002}
+  label{display:block;font-size:14px;font-weight:500;margin:0 0 6px}
+  input{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;margin-bottom:14px}
+  input:focus{outline:none;border-color:var(--accent)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+  @media(max-width:520px){.row2{grid-template-columns:1fr}}
+  .chk{display:flex;gap:10px;align-items:flex-start;font-size:15px;margin:6px 0 14px}
+  .chk input{width:22px;height:22px;margin:2px 0 0;flex:none}
+  #pad{width:100%;height:190px;border:2px dashed var(--line);border-radius:12px;background:#fff;touch-action:none;display:block}
+  .padbar{display:flex;justify-content:space-between;align-items:center;margin:6px 0 4px;font-size:13px;color:var(--muted)}
+  button{font:inherit;font-weight:700;border-radius:12px;border:0;cursor:pointer}
+  .btn{width:100%;font-size:18px;color:#fff;background:var(--accent);padding:14px;min-height:50px}
+  .btn[disabled]{opacity:.55;cursor:default}
+  .link{background:none;color:var(--muted);text-decoration:underline;font-weight:500;padding:4px}
+  .err{color:var(--bad);font-size:14px;min-height:20px;margin:4px 0 8px}
+  .msg{text-align:center;padding:40px 20px}
+  .msg .big{font-size:52px}
+  .hide{display:none}
+  .otp{letter-spacing:8px;text-align:center;font-size:24px;font-weight:700}
+  .note{font-size:13px;color:var(--muted);text-align:center;margin-top:10px}
+  /* עמודי ה-PDF שנוצרים (מחוץ למסך) */
+  #out{position:fixed;left:-10000px;top:0}
+  .pg{width:794px;min-height:1123px;padding:60px 64px;background:#fff;color:#111;font:15px/1.7 Heebo,sans-serif;direction:rtl}
+  .pg h3{font-size:24px;margin:0 0 6px}.pg .s{color:#555;margin-bottom:24px}
+  .pg table{width:100%;border-collapse:collapse;margin:10px 0 18px}.pg td{border:1px solid #ddd;padding:8px 10px;vertical-align:top}.pg td:first-child{width:200px;background:#f7f5f1;font-weight:700}
+  .pg .sig{border:1px solid #ddd;border-radius:8px;padding:8px;display:inline-block}.pg .sig img{height:120px}
+  .pg .mono{font-family:monospace;font-size:12px;word-break:break-all;direction:ltr;text-align:left}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">יהונתן לוזון · מאמן מנטלי</div>
+  <div id="load" class="msg"><div class="big">⏳</div><p>טוען את ההסכם…</p></div>
+  <div id="stop" class="msg hide"><div class="big" id="stopIcon">⚠️</div><h1 id="stopTitle"></h1><p class="sub" id="stopText"></p></div>
+
+  <div id="main" class="hide">
+    <h1 id="title"></h1>
+    <p class="sub" id="hello"></p>
+    <div class="card"><h2>1. קריאת ההסכם</h2><div id="doc"></div></div>
+    <div class="card">
+      <h2>2. הפרטים שלך</h2>
+      <div class="row2">
+        <div><label for="fname">שם מלא *</label><input id="fname" autocomplete="name"></div>
+        <div><label for="fid">תעודת זהות *</label><input id="fid" inputmode="numeric" maxlength="9" autocomplete="off"></div>
+        <div><label for="fphone">טלפון *</label><input id="fphone" type="tel" inputmode="tel" autocomplete="tel"></div>
+        <div><label for="femail">אימייל *</label><input id="femail" type="email" autocomplete="email"></div>
+        <div><label for="fstart">תאריך תחילת התהליך *</label><input id="fstart" type="date"></div>
+      </div>
+      <label class="chk"><input type="checkbox" id="fagree"> <span>קראתי את ההסכם ואני מסכים/ה לתנאיו</span></label>
+    </div>
+    <div class="card">
+      <h2>3. חתימה</h2>
+      <canvas id="pad"></canvas>
+      <div class="padbar"><span>חתום/י עם האצבע או העכבר</span><button class="link" id="clear" type="button">ניקוי</button></div>
+    </div>
+    <div class="card">
+      <h2>4. אימות ושליחה</h2>
+      <div id="step1">
+        <p style="margin:0 0 12px">נשלח קוד חד-פעמי למייל שלך כדי לאמת שזה באמת את/ה.</p>
+        <div class="err" id="err1"></div>
+        <button class="btn" id="sendOtp" type="button">שלח לי קוד אימות</button>
+      </div>
+      <div id="step2" class="hide">
+        <label for="fotp">הקוד שקיבלת במייל</label>
+        <input id="fotp" class="otp" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
+        <div class="err" id="err2"></div>
+        <button class="btn" id="signBtn" type="button">חתום על ההסכם</button>
+        <p class="note"><button class="link" id="resend" type="button">לא הגיע? שלח שוב</button></p>
+      </div>
+      <p class="note">החתימה, הפרטים, השעה והמכשיר נשמרים כתיעוד לחתימה. תעודת הזהות נשמרת מוצפנת.</p>
+    </div>
+  </div>
+</div>
+<div id="out"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbykbSkHoGxYKiIYvdFW_zRnW6cJH7s2ZNKtJRpOrP9CsBpL1Z26yBg4pQlKR7-aTZM2/exec';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const token = new URLSearchParams(location.search).get('t') || '';
+let C = null, pdfBytes = null;
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+const ERRS = {
+  not_found: ['הקישור לא תקין', 'כדאי לבדוק שהעתקת את כל הקישור, או לבקש קישור חדש.'],
+  expired: ['הקישור פג תוקף', 'הקישור תקף ל-14 יום. אפשר לבקש מיהונתן קישור חדש.'],
+  already_signed: ['ההסכם כבר נחתם', 'עותק חתום נשלח אליך במייל.', '✅'],
+  cancelled: ['ההסכם בוטל', 'לפרטים אפשר לפנות ליהונתן: 058-500-8617'],
+  no_template: ['ההסכם עדיין לא מוכן', 'נסה/י שוב מאוחר יותר.']
+};
+function stop(code) {
+  const [t, x, i] = ERRS[code] || ['משהו לא עבד', 'נסה/י שוב בעוד רגע, או פנה/י ליהונתן: 058-500-8617'];
+  $('load').classList.add('hide'); $('main').classList.add('hide'); $('stop').classList.remove('hide');
+  $('stopTitle').textContent = t; $('stopText').textContent = x; if (i) $('stopIcon').textContent = i;
+}
+async function api(body) {
+  const r = await fetch(API, { method: 'POST', body: JSON.stringify({ token, ...body }) });
+  return r.json();
+}
+const b64ToBytes = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
+function bytesToB64(u8) { let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
+async function shaHex(u8) { const h = await crypto.subtle.digest('SHA-256', u8); return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, '0')).join(''); }
+function validId(id) {
+  id = String(id).replace(/\D/g, ''); if (id.length < 5 || id.length > 9) return false; id = id.padStart(9, '0');
+  return [...id].reduce((s, d, i) => { let n = +d * ((i % 2) + 1); return s + (n > 9 ? n - 9 : n); }, 0) % 10 === 0;
+}
+
+/* ---------- טעינה ---------- */
+(async () => {
+  if (!token) return stop('not_found');
+  try {
+    C = await api({ action: 'get' });
+    if (!C.ok) return stop(C.error);
+    pdfBytes = b64ToBytes(C.pdf);
+    if (await shaHex(pdfBytes) !== C.docHash) return stop('server');
+    $('title').textContent = C.title;
+    $('hello').textContent = 'שלום ' + (C.clientName || '') + ', זה ההסכם שלנו. קרא/י, מלא/י את הפרטים וחתום/י.';
+    $('fname').value = C.clientName || ''; $('femail').value = C.email || ''; $('fphone').value = C.phone || '';
+    $('load').classList.add('hide'); $('main').classList.remove('hide');
+    const doc = await pdfjsLib.getDocument({ data: pdfBytes.slice() }).promise;
+    for (let p = 1; p <= doc.numPages; p++) {
+      const page = await doc.getPage(p), vp = page.getViewport({ scale: 1.6 });
+      const cv = document.createElement('canvas'); cv.width = vp.width; cv.height = vp.height;
+      $('doc').appendChild(cv);
+      await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+    }
+  } catch (e) { stop('server'); }
+})();
+
+/* ---------- משטח חתימה ---------- */
+const pad = $('pad'), ctx = pad.getContext('2d'); let drawing = false, signed = false, last = null;
+function sizePad() { const r = pad.getBoundingClientRect(), d = devicePixelRatio || 1; const img = signed ? pad.toDataURL() : null; pad.width = r.width * d; pad.height = r.height * d; ctx.scale(d, d); ctx.lineWidth = 2.6; ctx.lineCap = ctx.lineJoin = 'round'; ctx.strokeStyle = '#14213d'; if (img) { const i = new Image(); i.onload = () => ctx.drawImage(i, 0, 0, r.width, r.height); i.src = img; } }
+new ResizeObserver(sizePad).observe(pad);
+const pt = e => { const r = pad.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+pad.addEventListener('pointerdown', e => { drawing = true; last = pt(e); pad.setPointerCapture(e.pointerId); });
+pad.addEventListener('pointermove', e => { if (!drawing) return; const p = pt(e); ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke(); last = p; signed = true; });
+['pointerup', 'pointercancel'].forEach(t => pad.addEventListener(t, () => drawing = false));
+$('clear').onclick = () => { ctx.clearRect(0, 0, pad.width, pad.height); signed = false; };
+
+/* ---------- בדיקה ושליחת קוד ---------- */
+function check() {
+  const id = $('fid').value.replace(/\D/g, '');
+  if ($('fname').value.trim().split(/\s+/).length < 2) return 'צריך שם מלא (שם פרטי ושם משפחה).';
+  if (!validId(id)) return 'מספר תעודת הזהות לא תקין.';
+  if ($('fphone').value.replace(/\D/g, '').length < 9) return 'מספר הטלפון לא נראה תקין.';
+  if (!/^\S+@\S+\.\S+$/.test($('femail').value.trim())) return 'כתובת האימייל לא תקינה.';
+  if (!$('fstart').value) return 'צריך לבחור תאריך תחילת תהליך.';
+  if (!$('fagree').checked) return 'צריך לסמן שקראת את ההסכם ושאת/ה מסכים/ה לתנאיו.';
+  if (!signed) return 'צריך לחתום במשטח החתימה.';
+  return '';
+}
+async function sendOtp(errEl, btn) {
+  const m = check(); errEl.textContent = m; if (m) return;
+  btn.disabled = true; const old = btn.textContent; btn.textContent = 'שולח…';
+  try {
+    const r = await api({ action: 'otp', email: $('femail').value.trim() });
+    if (!r.ok) { errEl.textContent = r.error === 'too_many' ? 'נשלחו יותר מדי קודים. נסה/י שוב בעוד שעה.' : r.error in ERRS ? ERRS[r.error][0] : 'לא הצלחנו לשלוח קוד. נסה/י שוב.'; return; }
+    $('step1').classList.add('hide'); $('step2').classList.remove('hide'); $('err2').textContent = 'הקוד נשלח ל-' + $('femail').value.trim(); $('fotp').focus();
+  } catch (e) { errEl.textContent = 'בעיית תקשורת. נסה/י שוב.'; }
+  finally { btn.disabled = false; btn.textContent = old; }
+}
+$('sendOtp').onclick = () => sendOtp($('err1'), $('sendOtp'));
+$('resend').onclick = () => sendOtp($('err2'), $('resend'));
+
+/* ---------- חתימה ויצירת PDF ---------- */
+async function encryptId(id) {
+  const key = await crypto.subtle.importKey('jwk', C.pubKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt']);
+  return bytesToB64(new Uint8Array(await crypto.subtle.encrypt({ name: 'RSA-OAEP' }, key, new TextEncoder().encode(id))));
+}
+async function pagePng(html) {
+  const host = $('out'); host.innerHTML = '<div class="pg">' + html + '</div>';
+  const cv = await html2canvas(host.firstChild, { scale: 2, backgroundColor: '#fff' });
+  host.innerHTML = ''; return cv.toDataURL('image/png');
+}
+$('signBtn').onclick = async () => {
+  const btn = $('signBtn'), err = $('err2');
+  const m = check(); if (m) { err.textContent = m; return; }
+  const otp = $('fotp').value.replace(/\D/g, '');
+  if (otp.length !== 6) { err.textContent = 'הקוד צריך להיות 6 ספרות.'; return; }
+  btn.disabled = true; btn.textContent = 'חותם…'; err.textContent = '';
+  try {
+    let ip = ''; try { ip = (await (await fetch('https://api.ipify.org?format=json')).json()).ip || ''; } catch (e) {}
+    const f = { name: $('fname').value.trim(), id: $('fid').value.replace(/\D/g, ''), phone: $('fphone').value.trim(), email: $('femail').value.trim(), startDate: $('fstart').value };
+    const when = new Date(), whenTxt = when.toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' }) + ' (שעון ישראל)';
+    const sig = pad.toDataURL('image/png'), ua = navigator.userAgent;
+    const rows = a => '<table>' + a.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${v}</td></tr>`).join('') + '</table>';
+    const p1 = await pagePng(`<h3>פרטי החותם/ת</h3><div class="s">${esc(C.title)}</div>` + rows([
+      ['שם מלא', esc(f.name)], ['תעודת זהות', esc(f.id)], ['טלפון', esc(f.phone)], ['אימייל', esc(f.email)], ['תאריך תחילת התהליך', esc(f.startDate.split('-').reverse().join('/'))],
+      ['הצהרה', 'קראתי את ההסכם ואני מסכים/ה לתנאיו'], ['תאריך ושעת חתימה', esc(whenTxt)]]) +
+      `<p style="margin:18px 0 6px;font-weight:700">חתימה:</p><div class="sig"><img src="${sig}"></div>`);
+    const p2 = await pagePng(`<h3>תעודת חתימה</h3><div class="s">תיעוד החתימה האלקטרונית על המסמך</div>` + rows([
+      ['מסמך', esc(C.title)], ['נחתם על ידי', esc(f.name)], ['מייל שאומת בקוד חד-פעמי', esc(f.email)], ['תאריך ושעה', esc(whenTxt) + '<br><span class="mono">' + esc(when.toISOString()) + '</span>'],
+      ['כתובת IP', '<span class="mono">' + esc(ip || 'לא זמינה') + '</span>'], ['מכשיר ודפדפן', '<span class="mono">' + esc(ua) + '</span>'],
+      ['טביעת אצבע (SHA-256) של המסמך המקורי', '<span class="mono">' + esc(C.docHash) + '</span>'], ['מזהה בקשה', '<span class="mono">' + esc(token) + '</span>'],
+      ['אופן אימות', 'קוד חד-פעמי שנשלח לאימייל ואומת לפני החתימה']]) +
+      `<p style="color:#555;font-size:13px">הקובץ החתום נשמר ונעול לאחר החתימה. טביעת האצבע של הקובץ החתום כולו נשמרת במערכת ובתיאור הקובץ בדרייב.</p>`);
+    const pdf = await PDFLib.PDFDocument.load(pdfBytes);
+    for (const png of [p1, p2]) {
+      const img = await pdf.embedPng(png), page = pdf.addPage([595.28, 841.89]);
+      const s = Math.min(595.28 / img.width, 841.89 / img.height);
+      page.drawImage(img, { x: 0, y: 841.89 - img.height * s, width: img.width * s, height: img.height * s });
+    }
+    pdf.setTitle(C.title + ' – ' + f.name); pdf.setProducer('המשרד של יהונתן');
+    const out = await pdf.save();
+    const r = await api({ action: 'sign', otp, agree: true, docHash: C.docHash, pdf: bytesToB64(out), ip, ua, clientTime: when.toISOString(),
+      fields: { name: f.name, idEnc: await encryptId(f.id), phone: f.phone, email: f.email, startDate: f.startDate } });
+    if (!r.ok) {
+      err.textContent = { otp_wrong: 'הקוד לא נכון. בדוק/י ונסה/י שוב.', otp_expired: 'הקוד פג תוקף. בקש/י קוד חדש.', too_many: 'יותר מדי ניסיונות. בקש/י קוד חדש.', doc_changed: 'ההסכם עודכן בינתיים. רענן/י את הדף.' }[r.error] || (ERRS[r.error] ? ERRS[r.error][0] : 'החתימה לא נשמרה. נסה/י שוב.');
+      return;
+    }
+    $('main').classList.add('hide'); $('stop').classList.remove('hide');
+    $('stopIcon').textContent = '🎉'; $('stopTitle').textContent = 'ההסכם נחתם!'; $('stopText').textContent = 'עותק חתום נשלח עכשיו למייל שלך. נתראה בתהליך 🙏';
+  } catch (e) { err.textContent = 'משהו נתקע. נסה/י שוב בעוד רגע.'; }
+  finally { btn.disabled = false; btn.textContent = 'חתום על ההסכם'; }
+};
+</script>
+</body>
+</html>
